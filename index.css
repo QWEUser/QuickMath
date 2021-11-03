@@ -1,0 +1,55 @@
+* {
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+}
+
+:root {
+  /* from https://www.color-hex.com/color-palette/105274 */
+  --color1: rgba(132, 193, 123, 0.2);
+  --color2: rgba(9, 105, 54, 1);
+  --color1_transparent: rgba(132, 193, 123, 0.4);
+}
+
+.grid-container {
+  display: grid;
+  min-width: 300px;
+  max-width: min(50vw, 500px);
+  margin: auto;
+  /* border: 1px solid black; */
+  gap: 1rem;
+  place-items: center;
+  justify-items: stretch;
+  padding: 1rem;
+}
+
+h1 {
+  text-align: center;
+}
+
+h2 {
+  text-align: center;
+  font-size: 5rem;
+}
+
+.grid-number-cells {
+  text-align: center;
+  height: 5rem;
+  line-height: 5rem;
+  background-color: var(--color1);
+  font-size: 2rem;
+  color: var(--color2);
+}
+
+.grid-number-cells:hover {
+  background-color: var(--color1_transparent);
+}
+
+.button-activated {
+  border-style: inset;
+  background-color: var(--color2);
+  color: white;
+}
+
+.button-activated:hover {
+  background-color: var(--color2);
+}
