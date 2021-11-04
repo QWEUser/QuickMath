@@ -6,7 +6,7 @@ window.onload = function () {
 //global variable declaration
 let cellNumbers = [];
 let finalSum;
-equationContainer = document.querySelector("h2");
+const equationContainer = document.querySelector("h2");
 const n = 3; //(how many numbers the player needs to guess) + 1
 
 function createNumbers(m) {
@@ -54,39 +54,42 @@ function populateCells(n) {
   grid.style.gridTemplateColumns = "repeat(" + n + ",1fr)";
   let activeNumbers = [];
   for (let i = 0; i < n * n; i++) {
-    btn = grid.appendChild(document.createElement("button"));
-    btn.className = "grid-number-cells";
+    let btn = grid.appendChild(document.createElement("button"));
+    btn.className = "grid__number-cells";
     btn.id = "cell" + i;
     btn.innerHTML = cellNumbers[i];
+    //create a function for every button to add or remove class buttn-activated when button is pressed
     btn.onclick = function () {
-      console.log(this.innerHTML);
-      //   if (this.classList.contains("button-activated")) {
-      //     equationContainer.innerHTML = "_ + _ = " + finalSum;
-      //     this.classList.remove("button-activated");
-      //     activeNumbers = [];
-      //     console.log(activeNumbers);
-      //     return;
-      //   }
-      if (this.classList.contains("button-activated")) {
-        // equationContainer.innerHTML = "_ + _ = " + finalSum;
-        this.classList.remove("button-activated");
-        j = this.innerHTML;
+      if (this.classList.contains("button--activated")) {
+        this.classList.remove("button--activated");
+        let j = this.innerHTML;
         activeNumbers = activeNumbers.filter(function (i) {
-          console.log("i = " + i + " innerHTML = " + j);
-          if (i == j) {
-            console.log("true");
-          } else {
-            console.log("false");
+          if (i != j) {
+            return j;
           }
-          i != j;
-          console.log(activeNumbers);
         });
         console.log(activeNumbers);
+        writeEquation();
         return;
       }
       if (activeNumbers.length <= n - 2) {
-        this.classList.add("button-activated");
-        activeNumbers.push(this.innerHTML);
+        this.classList.add("button--activated");
+        activeNumbers.push(parseInt(this.innerHTML));
+        writeEquation();
+      }
+      if (activeNumbers.length == n - 1) {
+        const playerResult = activeNumbers.reduce(
+          (accumulator, curr) => accumulator + curr
+        );
+        if (finalSum == playerResult) {
+          console.log("Success!" + " " + finalSum + " = " + playerResult);
+        } else {
+          console.log("Nope!" + " " + finalSum + " != " + playerResult);
+        }
+        //location.reload();
+      }
+      //a local function to refresh the equationContainer with updated equation after button is pressed
+      function writeEquation() {
         let textResult = "";
         for (i = 0; i < n - 2; i++) {
           if (activeNumbers[i] == undefined) {
@@ -98,12 +101,9 @@ function populateCells(n) {
         if (activeNumbers.length == n - 1) {
           equationContainer.innerHTML =
             textResult + " " + activeNumbers[n - 2] + " = " + finalSum;
-          console.log(activeNumbers);
           return;
         }
         equationContainer.innerHTML = textResult + " _ = " + finalSum;
-      } else {
-        location.reload();
       }
       console.log(activeNumbers);
     };

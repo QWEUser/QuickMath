@@ -31,7 +31,7 @@ h2 {
   font-size: 5rem;
 }
 
-.grid-number-cells {
+.grid__number-cells {
   text-align: center;
   height: 5rem;
   line-height: 5rem;
@@ -40,16 +40,16 @@ h2 {
   color: var(--color2);
 }
 
-.grid-number-cells:hover {
+.grid__number-cells:hover {
   background-color: var(--color1_transparent);
 }
 
-.button-activated {
+.button--activated {
   border-style: inset;
   background-color: var(--color2);
   color: white;
 }
 
-.button-activated:hover {
+.button--activated:hover {
   background-color: var(--color2);
 }
