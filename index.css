@@ -31,6 +31,15 @@ h2 {
   font-size: 5rem;
 }
 
+.highscore-container {
+  text-align: center;
+  font-size: 1rem;
+  color: var(--color2);
+  background-color: var(--color1);
+  text-transform: uppercase;
+  position: relative;
+}
+
 .grid__number-cells {
   text-align: center;
   height: 5rem;
@@ -52,4 +61,28 @@ h2 {
 
 .button--activated:hover {
   background-color: var(--color2);
+}
+
+@keyframes fade-in-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.plus-one {
+  position: absolute;
+  color: var(--color1);
+  font-size: 6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  /* margin: 0 auto; */
+  /* animation: fade-in-out 2s forwards; */
+}
+
+.animation-fade-in-out {
+  animation: fade-in-out 1s forwards;
 }

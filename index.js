@@ -7,7 +7,12 @@ window.onload = function () {
 let cellNumbers = [];
 let finalSum;
 const equationContainer = document.querySelector("h2");
+const highscoreContainer = document.querySelector(
+  ".highscore-container > span"
+);
+const plusOne = document.querySelector(".plus-one");
 const n = 3; //(how many numbers the player needs to guess) + 1
+let highscore = 0;
 
 function createNumbers(m) {
   cellNumbers = [];
@@ -50,6 +55,7 @@ function initialEquation() {
 function populateCells(n) {
   createNumbers(n * n);
   let grid = document.querySelector(".grid-container");
+  grid.innerHTML = "";
   grid.style.gridTemplateRows = "repeat(" + n + ",1fr)";
   grid.style.gridTemplateColumns = "repeat(" + n + ",1fr)";
   let activeNumbers = [];
@@ -62,12 +68,12 @@ function populateCells(n) {
     btn.onclick = function () {
       if (this.classList.contains("button--activated")) {
         this.classList.remove("button--activated");
-        let j = this.innerHTML;
-        activeNumbers = activeNumbers.filter(function (i) {
-          if (i != j) {
-            return j;
-          }
-        });
+        let targetNumber = parseInt(this.innerHTML);
+        let index = activeNumbers.indexOf(targetNumber);
+        if (index > -1) {
+          activeNumbers.splice(index, 1);
+        }
+
         console.log(activeNumbers);
         writeEquation();
         return;
@@ -82,10 +88,18 @@ function populateCells(n) {
           (accumulator, curr) => accumulator + curr
         );
         if (finalSum == playerResult) {
-          console.log("Success!" + " " + finalSum + " = " + playerResult);
+          // alert("Success!" + " " + finalSum + " = " + playerResult);
+          populateCells(n);
+          highscore++;
+          plusOne.classList.add("animation-fade-in-out");
+          setTimeout(() => {
+            plusOne.classList.remove("animation-fade-in-out");
+          }, 1000);
         } else {
-          console.log("Nope!" + " " + finalSum + " != " + playerResult);
+          // alert("Nope!" + " " + finalSum + " != " + playerResult);
+          highscore = 0;
         }
+        highscoreContainer.innerHTML = highscore;
         //location.reload();
       }
       //a local function to refresh the equationContainer with updated equation after button is pressed
