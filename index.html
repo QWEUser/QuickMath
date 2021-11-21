@@ -31,9 +31,38 @@
     <![endif]-->
 
     <h1>QuickMath</h1>
-    <h3 class="highscore-container">
-      Highscore: <span>0</span><span class="plus-one">+1</span>
-    </h3>
+    <div class="game-settings-window">
+      <div class="game-settings-window__button-container">
+      <h3>Difficulty</h3>
+      <div class="line-break"></div>
+      <button class="game-settings-window__button" id="level-easy" data-level="3" onclick="setDifficulty(this.id)">Easy</button>
+      <button class="game-settings-window__button game-settings-window__button--activated" id="level-medium" data-level="4" onclick="setDifficulty(this.id)">Medium</button>
+      <button class="game-settings-window__button" id="level-hard" data-level="5" onclick="setDifficulty(this.id)">Hard</button>
+      <div class="game-settings-window__button-container game-settings-window__action-button-container">
+        <button class="game-settings-window__action-button game-settings-window__button" onclick="restartGame();closeSettings()">Confirm</button>
+        <button class="game-settings-window__action-button game-settings-window__button" onclick="closeSettings()">Cancel</button>
+      </div>
+      </div>
+    </div>
+    <div class="game-over-window">
+      <div class="game-over-window__message"></div>
+      <div class="game-over-window__button-container">
+        <button class="game-over-window__button" onclick="restartGame()">
+          Play again?
+        </button>
+        <button class="game-over-window__button" onclick="openSettings()">
+          Settings
+        </button>
+      </div>
+    </div>
+    <div class="score-container">
+      <ul>
+        <li>Current score: <span class="current-score">0</span><span class="plus-one">+1</span></li>
+        <li class="timer" id="timer"></li>
+        <li>High score: <score:span class="highscore">0</score:span></li>
+      </ul>
+    <div/>
+    <h4 class="timer"></h4>
     <h2 class="equation-display">Loading...</h2>
     <div class="grid-container"></div>
     <script src="index.js" async defer></script>
