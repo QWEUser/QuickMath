@@ -6,10 +6,10 @@ window.onload = function () {
 };
 
 //global variable declaration
-let cellNumbers = [];
+let solutionNumbers = [];
 let finalSum;
 let maxSum = 50;
-let minutes = 0.01;
+let minutes = 1;
 const equationContainer = document.querySelector("h2");
 const currentScoreContainer = document.querySelector(".current-score");
 const highScoreContainer = document.querySelector(".high-score");
@@ -26,7 +26,6 @@ let highScore = 0;
 if (typeof Storage !== "undefined") {
   let localStorageInfo = window.localStorage.getItem("highscore");
   highScore = localStorageInfo;
-  console.log(localStorageInfo);
   highScoreContainer.innerHTML = highScore;
 }
 
@@ -42,21 +41,16 @@ function setDifficulty(difficultyLevel) {
   // this.addEventListener("click", function () {
   //   this.classList.add("game-settings-window__button--activated");
   // });
-  console.log(difficultyLevel);
   if (difficultyLevel == "level-easy") {
     n = 3;
-    maxSum = 20;
+    maxSum = 30;
   } else if (difficultyLevel == "level-medium") {
     n = 3;
-    maxSum = 50;
+    maxSum = 100;
   } else if (difficultyLevel == "level-hard") {
     n = 4;
-    maxSum = 100;
+    maxSum = 50;
   }
-}
-
-function getHighScore() {
-  console.log(localStorage.high);
 }
 
 function restartGame() {
@@ -77,7 +71,7 @@ function closeSettings() {
 }
 
 function createNumbers(m) {
-  cellNumbers = [];
+  solutionNumbers = [];
 
   //create the sum of the equation
   finalSum = Math.round(Math.random() * maxSum);
@@ -85,23 +79,34 @@ function createNumbers(m) {
   //create the first solution integer
   const firstNumber = Math.round(Math.random() * finalSum);
 
-  //create the second solution integer
-  const secondNumber = finalSum - firstNumber;
-  console.log(firstNumber + " + " + secondNumber + " = " + finalSum);
-  cellNumbers.push(firstNumber, secondNumber);
+  //create solution integers
+  let sumLeft = finalSum;
+  let currentNumber;
+  for (let i = 1; i < n - 1; i++) {
+    currentNumber = Math.round(Math.random() * sumLeft);
+    solutionNumbers.push(currentNumber);
+    sumLeft = sumLeft - currentNumber;
+    console.log("current number: " + currentNumber);
+  }
+  solutionNumbers.push(sumLeft);
+  console.log(solutionNumbers);
 
   //create (m-2) random integers
-  for (let i = 1; i < m - 1; i++) {
-    cellNumbers.push(Math.round(Math.random() * finalSum));
+  for (let i = 1; i < m - n + 2; i++) {
+    solutionNumbers.push(Math.round(Math.random() * finalSum));
   }
+  console.log(solutionNumbers);
 
   //shuffle the array using Durstenfeld shuffle
-  for (let i = cellNumbers.length - 1; i > 0; i--) {
+  for (let i = solutionNumbers.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [cellNumbers[i], cellNumbers[j]] = [cellNumbers[j], cellNumbers[i]];
+    [solutionNumbers[i], solutionNumbers[j]] = [
+      solutionNumbers[j],
+      solutionNumbers[i],
+    ];
   }
 
-  //polulate h2 with the equation
+  //populate h2 with the equation
   initialEquation();
 }
 
@@ -153,7 +158,7 @@ function populateCells(n) {
     let btn = grid.appendChild(document.createElement("button"));
     btn.className = "grid__number-cells";
     btn.id = "cell" + i;
-    btn.innerHTML = cellNumbers[i];
+    btn.innerHTML = solutionNumbers[i];
     //create a function for every button to add or remove class buttn-activated when button is pressed
     btn.onclick = function () {
       if (this.classList.contains("button--activated")) {
@@ -163,7 +168,6 @@ function populateCells(n) {
         if (index > -1) {
           activeNumbers.splice(index, 1);
         }
-        console.log(activeNumbers);
         writeEquation();
         return;
       }
@@ -207,7 +211,6 @@ function populateCells(n) {
         }
         equationContainer.innerHTML = textResult + " _ = " + finalSum;
       }
-      console.log(activeNumbers);
     };
   }
 }
