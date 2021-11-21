@@ -214,20 +214,21 @@ h2 {
 
 .game-over-window__button-container {
   display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
   justify-content: space-evenly;
   min-width: 300px;
   max-width: min(50vw, 500px);
   margin: auto;
+  margin-top: 3rem;
 }
 
 .game-over-window__button {
-  margin: auto;
   font-size: 2rem;
   color: rgba(var(--color2), 1);
   background-color: rgba(var(--color2), 0);
   border: 1px solid rgba(var(--color2), 1);
   padding: 1rem;
-  margin-top: 3rem;
 }
 
 .game-over-window__button:hover {

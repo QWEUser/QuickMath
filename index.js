@@ -9,9 +9,10 @@ window.onload = function () {
 let cellNumbers = [];
 let finalSum;
 let maxSum = 50;
-let minutes = 1;
+let minutes = 0.01;
 const equationContainer = document.querySelector("h2");
 const currentScoreContainer = document.querySelector(".current-score");
+const highScoreContainer = document.querySelector(".high-score");
 const gameOverWindow = document.querySelector(".game-over-window");
 const gameSettingsWindow = document.querySelector(".game-settings-window");
 const gameOverWindowMessage = document.querySelector(
@@ -20,6 +21,14 @@ const gameOverWindowMessage = document.querySelector(
 const plusOne = document.querySelector(".plus-one");
 let n = 3; //(how many numbers the player needs to guess) + 1
 let currentScore = 0;
+let highScore = 0;
+
+if (typeof Storage !== "undefined") {
+  let localStorageInfo = window.localStorage.getItem("highscore");
+  highScore = localStorageInfo;
+  console.log(localStorageInfo);
+  highScoreContainer.innerHTML = highScore;
+}
 
 function setDifficulty(difficultyLevel) {
   let elements = document.getElementsByClassName(
@@ -44,6 +53,10 @@ function setDifficulty(difficultyLevel) {
     n = 4;
     maxSum = 100;
   }
+}
+
+function getHighScore() {
+  console.log(localStorage.high);
 }
 
 function restartGame() {
@@ -107,6 +120,15 @@ function timer() {
       clearInterval(timer);
       gameOverWindow.style.display = "block";
       gameOverWindowMessage.innerHTML = `Time's up! Your final score is ${currentScore}.`;
+      if (currentScore > highScore) {
+        highScore = currentScore;
+        highScoreContainer.innerHTML = highScore;
+
+        //store high score to localStorage
+        if (typeof Storage !== "undefined") {
+          window.localStorage.setItem("highscore", highScore);
+        }
+      }
     }
   }, 1000);
 }
