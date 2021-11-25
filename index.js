@@ -23,6 +23,7 @@ let n = 3; //(how many numbers the player needs to guess) + 1
 let currentScore = 0;
 let highScore = 0;
 
+//fetch highscore from localStorage, if it exists
 if (typeof Storage !== "undefined") {
   let localStorageInfo = window.localStorage.getItem("highscore");
   highScore = localStorageInfo;
@@ -68,6 +69,12 @@ function openSettings() {
 
 function closeSettings() {
   gameSettingsWindow.style.display = "none";
+}
+
+function resetHighScore() {
+  if (typeof Storage !== "undefined") {
+    window.localStorage.setItem("highscore", 0);
+  }
 }
 
 function createNumbers(m) {

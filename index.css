@@ -239,3 +239,7 @@ h2 {
   color: rgba(var(--lightest-green), 1);
   border-color: rgba(var(--color1), 1);
 }
+
+#reset-high-score {
+  width: 50%;
+}

@@ -61,6 +61,17 @@
         >
           Hard
         </button>
+        <div class="line-break"></div>
+        <h3>Clcik to reset high score</h3>
+        <div class="line-break"></div>
+        <button
+          class="game-settings-window__button"
+          id="reset-high-score"
+          data-level="4"
+          onclick="resetHighScore()"
+        >
+          Reset
+        </button>
         <div
           class="
             game-settings-window__button-container
@@ -73,7 +84,7 @@
             "
             onclick="restartGame();closeSettings()"
           >
-            Confirm
+            Restart game
           </button>
           <button
             class="
@@ -81,7 +92,7 @@
             "
             onclick="closeSettings()"
           >
-            Cancel
+            Back
           </button>
         </div>
       </div>
