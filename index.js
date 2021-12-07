@@ -1,15 +1,19 @@
 //execute these functions when the page loads
 window.onload = function () {
   populateCells(n);
-  timer();
   document.querySelector(".timer").innerHTML = minutes + ":00";
+  initiateTimer();
 };
 
 //global variable declaration
+let initialTime, countdown;
+
 let solutionNumbers = [];
 let finalSum;
-let maxSum = 50;
+let maxSum = 100;
+let minSum = 30;
 let minutes = 1;
+const timerDispaly = document.querySelector(".timer");
 const equationContainer = document.querySelector("h2");
 const currentScoreContainer = document.querySelector(".current-score");
 const highScoreContainer = document.querySelector(".high-score");
@@ -45,21 +49,25 @@ function setDifficulty(difficultyLevel) {
   if (difficultyLevel == "level-easy") {
     n = 3;
     maxSum = 30;
+    minSum = 2;
   } else if (difficultyLevel == "level-medium") {
     n = 3;
     maxSum = 100;
+    minSum = 30;
   } else if (difficultyLevel == "level-hard") {
     n = 4;
     maxSum = 50;
+    minSum = 10;
   }
+  displayDifficulty();
 }
 
 function restartGame() {
   currentScore = 0;
   currentScoreContainer.innerHTML = currentScore;
   populateCells(n);
-  timer();
   document.querySelector(".timer").innerHTML = minutes + ":00";
+  initiateTimer();
   gameOverWindow.style.display = "none";
 }
 
@@ -77,14 +85,20 @@ function resetHighScore() {
   }
 }
 
+function stopAndOpenSettings() {
+  clearInterval(countdown);
+  gameOverWindow.style.display = "block";
+  openSettings();
+}
+
 function createNumbers(m) {
   solutionNumbers = [];
 
   //create the sum of the equation
-  finalSum = Math.round(Math.random() * maxSum);
-
-  //create the first solution integer
-  const firstNumber = Math.round(Math.random() * finalSum);
+  finalSum = Math.floor(Math.random() * (maxSum - minSum + 1) + minSum);
+  // if (finalSum > maxSum) {
+  //   finalSum = finalSum - maxSum + minSum;
+  // }
 
   //create solution integers
   let sumLeft = finalSum;
@@ -117,32 +131,33 @@ function createNumbers(m) {
   initialEquation();
 }
 
-function timer() {
-  let initialTime = minutes * 60;
-  let timerDispaly = document.querySelector(".timer");
-  let timer = setInterval(function () {
-    let timerMinutes = Math.floor(initialTime / 60);
-    let timerSeconds = initialTime - timerMinutes * 60;
-    if (timerSeconds < 10) {
-      timerSeconds = "0" + timerSeconds;
-    }
-    timerDispaly.innerHTML = timerMinutes + ":" + timerSeconds;
-    initialTime--;
-    if (initialTime < 0) {
-      clearInterval(timer);
-      gameOverWindow.style.display = "block";
-      gameOverWindowMessage.innerHTML = `Time's up! Your final score is ${currentScore}.`;
-      if (currentScore > highScore) {
-        highScore = currentScore;
-        highScoreContainer.innerHTML = highScore;
+function initiateTimer() {
+  initialTime = minutes * 60;
+  countdown = setInterval(timer, 1000);
+}
 
-        //store high score to localStorage
-        if (typeof Storage !== "undefined") {
-          window.localStorage.setItem("highscore", highScore);
-        }
+function timer() {
+  let timerMinutes = Math.floor(initialTime / 60);
+  let timerSeconds = initialTime - timerMinutes * 60;
+  if (timerSeconds < 10) {
+    timerSeconds = "0" + timerSeconds;
+  }
+  timerDispaly.innerHTML = timerMinutes + ":" + timerSeconds;
+  initialTime--;
+  if (initialTime < 0) {
+    clearInterval(countdown);
+    gameOverWindow.style.display = "block";
+    gameOverWindowMessage.innerHTML = `Time's up! Your final score is ${currentScore}.`;
+    if (currentScore > highScore) {
+      highScore = currentScore;
+      highScoreContainer.innerHTML = highScore;
+
+      //store high score to localStorage
+      if (typeof Storage !== "undefined") {
+        window.localStorage.setItem("highscore", highScore);
       }
     }
-  }, 1000);
+  }
 }
 
 function initialEquation() {
@@ -153,8 +168,25 @@ function initialEquation() {
   equationContainer.innerHTML = equationText + "_ = " + finalSum;
 }
 
+function displayDifficulty() {
+  let activeDifficultyLevel = document.querySelector(
+    ".game-settings-window__button--activated"
+  ).id;
+
+  //remove "level-" from difficulty name
+  activeDifficultyLevel = activeDifficultyLevel.slice(6);
+
+  //Capitalize difficulty string
+  activeDifficultyLevel =
+    activeDifficultyLevel.charAt(0).toUpperCase() +
+    activeDifficultyLevel.slice(1);
+  document.querySelector("h1").innerHTML =
+    "QuickMath - " + activeDifficultyLevel;
+}
+
 //Populate the grid with cells
 function populateCells(n) {
+  displayDifficulty();
   createNumbers(2 * n);
   let grid = document.querySelector(".grid-container");
   grid.innerHTML = "";
@@ -166,7 +198,8 @@ function populateCells(n) {
     btn.className = "grid__number-cells";
     btn.id = "cell" + i;
     btn.innerHTML = solutionNumbers[i];
-    //create a function for every button to add or remove class buttn-activated when button is pressed
+
+    //create a function for every button to add or remove class button-activated when button is pressed
     btn.onclick = function () {
       if (this.classList.contains("button--activated")) {
         this.classList.remove("button--activated");
@@ -201,6 +234,7 @@ function populateCells(n) {
         currentScoreContainer.innerHTML = currentScore;
         //location.reload();
       }
+
       //a local function to refresh the equationContainer with updated equation after button is pressed
       function writeEquation() {
         let textResult = "";

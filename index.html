@@ -62,7 +62,7 @@
           Hard
         </button>
         <div class="line-break"></div>
-        <h3>Clcik to reset high score</h3>
+        <h3>Click to reset high score</h3>
         <div class="line-break"></div>
         <button
           class="game-settings-window__button"
@@ -84,7 +84,7 @@
             "
             onclick="restartGame();closeSettings()"
           >
-            Restart game
+            Start new game
           </button>
           <button
             class="
@@ -98,7 +98,7 @@
       </div>
     </div>
     <div class="game-over-window">
-      <div class="game-over-window__message"></div>
+      <div class="game-over-window__message">The game ended.</div>
       <div class="game-over-window__button-container">
         <button class="game-over-window__button" onclick="restartGame()">
           Play again?
@@ -108,14 +108,20 @@
         </button>
       </div>
     </div>
+    <div class="timer" id="timer"></div>
     <div class="score-container">
       <ul>
         <li>
           Current score: <span class="current-score">0</span
           ><span class="plus-one">+1</span>
         </li>
-        <li class="timer" id="timer"></li>
         <li>High score: <span class="high-score">0</span></li>
+        <li
+          class="score-container__settings-button"
+          onclick="stopAndOpenSettings()"
+        >
+          Settings
+        </li>
       </ul>
     </div>
     <h4 class="timer"></h4>
