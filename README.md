@@ -1,2 +1,2 @@
 # QuickMath
-A simble math game
+A simple math game
